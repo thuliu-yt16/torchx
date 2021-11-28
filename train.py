@@ -13,24 +13,6 @@ import utils
 
 import pytorch_lightning as pl
 
-# import warnings
-# warnings.filterwarnings("ignore")
-
-# def make_data_loader(spec, tag=''):
-#     if spec is None:
-#         return None
-
-#     dataset = datasets.make(spec['dataset'])
-#     dataset = datasets.make(spec['wrapper'], args={'dataset': dataset})
-
-#     log('{} dataset: size={}'.format(tag, len(dataset)))
-#     for k, v in dataset[0].items():
-#         log('  {}: shape={}'.format(k, tuple(v.shape)))
-
-#     loader = DataLoader(dataset, batch_size=spec['batch_size'],
-#         shuffle=(tag == 'train'), num_workers=os.cpu_count(), pin_memory=True)
-#     return loader
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--config')

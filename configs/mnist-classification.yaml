@@ -1,0 +1,29 @@
+data_module:
+  name: mnist
+  args:
+    root_dir: ./load/mnist
+    batch_size: 32
+  
+train_wrapper:
+  name: base
+  args:
+    model_spec:
+      name: resnet18
+      args:
+        num_classes: 10
+    
+    loss_spec:
+      name: ce
+    
+    optim_spec:
+      name: Adam
+      args:
+        lr: 1.e-4
+        betas: [0.9, 0.999]
+
+trainer_params:
+  max_epochs: 100
+
+seed: 42
+
+    
