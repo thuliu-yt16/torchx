@@ -21,7 +21,7 @@ def make(loss_spec, args=None):
     loss = losses[loss_spec['name']](**loss_args)
     return loss
 
-@register('ce')
+@register('mnist_ce')
 class CrossEntropy(nn.Module):
     def __init__(self):
         super().__init__()
@@ -41,4 +41,6 @@ class l1liif(nn.Module):
         self._gt_sub = data_norm['gt']['sub']
 
     def forward(self, pred, batch, **kwargs):
-        return self.loss_fn(pred, (batch['gt'] - self._gt_sub) / self._gt_div)
+        return {
+            'loss': self.loss_fn(pred, (batch['gt'] - self._gt_sub) / self._gt_div)
+        }

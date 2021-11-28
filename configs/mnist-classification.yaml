@@ -13,7 +13,7 @@ train_wrapper:
         num_classes: 10
     
     loss_spec:
-      name: ce
+      name: mnist_ce
     
     optim_spec:
       name: Adam
