@@ -19,17 +19,24 @@ class BaseWrapper(pl.LightningModule):
 
         self.optim_spec = optim_spec
         self.scheduler_spec = scheduler_spec
+
+        self.save_hyperparameters()
     
     def forward(self, batch):
         return self.model(batch)
     
     def training_step(self, batch, batch_idx):
         out = self(batch)
-        loss = self.loss(pred=out, batch=batch, batch_idx=batch_idx, model=self.model)
+        loss = self.loss(pred=out, batch=batch, batch_idx=batch_idx, stage='train', model=self.model)
         return loss
     
     def validation_step(self, batch, batch_idx):
-        pass
+        out = self(batch)
+        loss = self.loss(pred=out, batch=batch, batch_idx=batch_idx, stage='val', model=self.model)
+        if 'val_loss' in loss:
+            self.log('val_loss', loss['val_loss'], prog_bar=True)
+        elif 'loss' in loss:
+            self.log('val_loss', loss['loss'], prog_bar=True)
 
     def test_step(self, batch, batch_idx):
         pass

@@ -19,6 +19,7 @@ def main():
     parser.add_argument('--name', default=None)
     parser.add_argument('--tag', default=None)
     parser.add_argument('--gpu', default='0')
+    parser.add_argument('--resume')
     args = parser.parse_args()
 
     global config, log, writer
@@ -50,12 +51,26 @@ def main():
 
     data_module = datasets.make(config['data_module'])
     model = models.make(config['train_wrapper'])
+    checkpoint_cfg = config.get('checkpoint', {})
+
+    checkpoint_callback = pl.callbacks.ModelCheckpoint(
+        dirpath=os.path.join(save_path, 'ckpt'),
+        save_last=True,
+        auto_insert_metric_name=True,
+        **checkpoint_cfg,
+        )
+
     trainer = pl.Trainer(
         gpus=n_gpus,
         strategy=pl.plugins.DDPPlugin(find_unused_parameters=False),
+        callbacks=[checkpoint_callback],
         **config['trainer_params']
         )
-    trainer.fit(model, data_module)
+    
+    if args.resume:
+        trainer.fit(model, data_module, ckpt_path=args.resume)
+    else:
+        trainer.fit(model, data_module)
 
 if __name__ == '__main__':
     main()
