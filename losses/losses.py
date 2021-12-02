@@ -14,7 +14,7 @@ def register(name):
 
 
 def make(loss_spec, args=None):
-    loss_args = loss_spec.get('args', {})
+    loss_args = copy.deepcopy(loss_spec.get('args', {}))
     args = args or {}
     loss_args.update(args)
 
