@@ -31,4 +31,4 @@ class Timer(Callback):
         t_epoch = utils.time_text(t - self._t_epoch_start)
         t_elapsed, t_all = utils.time_text(t), utils.time_text(t / prog)
 
-        trainer.print(f'epoch {trainer.current_epoch}/{trainer.max_epochs} {t_epoch} {t_elapsed}/{t_all}')
+        print(f'epoch {trainer.current_epoch}/{trainer.max_epochs} {t_epoch} {t_elapsed}/{t_all}')
