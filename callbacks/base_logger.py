@@ -54,6 +54,7 @@ class BaseLogger(Callback):
         t_elapsed, t_all = utils.time_text(t), utils.time_text(t / prog)
 
         met = trainer.progress_bar_callback.get_metrics(trainer, pl_module)
+        met.pop('v_num')
 
         metric_str = ','.join([f'{k}={v}'for k, v in met.items()])
         self._logger.log(f'Epoch {trainer.current_epoch}/{trainer.max_epochs} {metric_str} {t_epoch} {t_elapsed}/{t_all}')

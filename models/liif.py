@@ -4,11 +4,10 @@ import torch.nn.functional as F
 import math
 
 import models
-from models import register
 from utils import make_coord
 
 
-@register('mipliif')
+@models.register('mipliif')
 class MipLIIF(nn.Module):
 
     def __init__(self, encoder_spec, data_norm, imnet_spec=None,
@@ -171,3 +170,12 @@ class MipLIIF(nn.Module):
     
     def get_eval_rgb(self, coord, cell):
         return self.query_rgb(coord, cell)
+    
+@models.register('mipliif-wrapper')
+class mipliif_wrapper(models.BaseWrapper):
+    def validation_step(self, batch, batch_idx):
+        out = self(batch)
+        metrics = {'psnr': self.loss.psnr(pred=out, batch=batch)}
+        self.log_dict(metrics, sync_dist=True, prog_bar=True, logger=True)
+
+

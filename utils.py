@@ -66,7 +66,9 @@ def ensure_path(path, remove=True):
     if os.path.exists(path):
         if remove and (basename.startswith('_') or input('{} exists, remove? (y/[n]): '.format(path)) == 'y'):
             shutil.rmtree(path)
-        os.makedirs(path)
+            os.makedirs(path)
+        else:
+            os.makedirs(path, exist_ok=True)
     else:
         os.makedirs(path)
 

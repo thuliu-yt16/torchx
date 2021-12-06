@@ -12,7 +12,7 @@ import models
 import utils
 
 import pytorch_lightning as pl
-from callbacks import BaseLogger, GlobalProgressBar
+from callbacks import BaseLogger
 
 def main():
     parser = argparse.ArgumentParser()
@@ -36,17 +36,10 @@ def main():
         save_name += '_' + args.tag
     save_path = os.path.join('./save', save_name)
 
-    # create save directory and copy code
-    # log, writer = utils.set_save_path(save_path)
-
     if 'seed' not in config:
         config['seed'] = int(time.time() * 1000) % 1000
     config['cmd_args'] = vars(args)
 
-    # save config
-    # with open(os.path.join(save_path, 'config.yaml'), 'w') as f:
-    #     yaml.dump(config, f, sort_keys=False)
-    
     pl.seed_everything(config['seed'])
     n_gpus = len(args.gpu.split(','))
 
@@ -66,7 +59,7 @@ def main():
     trainer = pl.Trainer(
         gpus=n_gpus,
         callbacks=[base_logger, checkpoint_callback],
-        logger=False,
+        logger=[pl.loggers.TensorBoardLogger(save_path)],
         **config['trainer_params']
         )
     

@@ -1,5 +1,5 @@
 from .tools import register, make
-from . import base
+from .base import BaseWrapper
 from . import resnet
 from . import liif
 from . import edsr

@@ -28,13 +28,11 @@ class BaseWrapper(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         out = self(batch)
         loss = self.loss(pred=out, batch=batch, batch_idx=batch_idx, stage='train', model=self.model)
-        self.log_dict(loss)
+        self.log('loss', loss['loss'])
         return loss
     
     def validation_step(self, batch, batch_idx):
-        out = self(batch)
-        loss = self.loss(pred=out, batch=batch, batch_idx=batch_idx, stage='val', model=self.model)
-        self.log_dict(loss)
+        pass
 
     def test_step(self, batch, batch_idx):
         pass
@@ -99,3 +97,4 @@ class BaseWrapper(pl.LightningModule):
 
     # def any_extra_hook(...):
     #     pass
+

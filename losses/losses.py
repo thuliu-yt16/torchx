@@ -41,6 +41,14 @@ class l1liif(nn.Module):
         self._gt_sub = data_norm['gt']['sub']
 
     def forward(self, pred, batch, **kwargs):
-        return {
+        ret = {
             'loss': self.loss_fn(pred, (batch['gt'] - self._gt_sub) / self._gt_div)
         }
+        return ret
+
+    def psnr(self, pred, batch, **kwargs):
+        pred = pred * self._gt_div + self._gt_sub
+        pred.clamp_(0, 1)
+        diff = pred - batch['gt']
+        mse = diff.pow(2).mean()
+        return -10 * torch.log10(mse)

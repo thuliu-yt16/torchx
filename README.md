@@ -6,7 +6,7 @@ Torchx is a general framework for deep learning experiments under PyTorch based 
 
 - [ ] gan-like training wrapper
 - [ ] text logger
-- [ ] tensorboard logger
-- [ ] checkpoint saver
+- [x] tensorboard logger
+- [x] checkpoint saver
 
 
