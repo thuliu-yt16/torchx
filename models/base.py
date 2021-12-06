@@ -56,18 +56,8 @@ class BaseWrapper(pl.LightningModule):
 
         return ret
     
-    def training_step_end(self, batch_parts):
-        # # predictions from each GPU
-        # predictions = batch_parts["pred"]
-        # # losses from each GPU
-        # losses = batch_parts["loss"]
-
-        # gpu_0_prediction = predictions[0]
-        # gpu_1_prediction = predictions[1]
-
-        # # do something with both outputs
-        # return (losses[0] + losses[1]) / 2
-        pass
+    def training_step_end(self, training_step_outputs):
+        return {'loss': training_step_outputs['loss'].mean()}
 
     def training_epoch_end(self, training_step_outputs):
         # for pred in training_step_outputs:
