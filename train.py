@@ -12,6 +12,7 @@ import models
 import utils
 
 import pytorch_lightning as pl
+from callbacks import BaseLogger
 
 def main():
     parser = argparse.ArgumentParser()
@@ -36,7 +37,7 @@ def main():
     save_path = os.path.join('./save', save_name)
 
     # create save directory and copy code
-    log, writer = utils.set_save_path(save_path)
+    # log, writer = utils.set_save_path(save_path)
 
     if 'seed' not in config:
         config['seed'] = int(time.time() * 1000) % 1000
@@ -53,6 +54,8 @@ def main():
     model = models.make(config['train_wrapper'])
     checkpoint_cfg = config.get('checkpoint', {})
 
+    base_logger = BaseLogger(save_path)
+
     checkpoint_callback = pl.callbacks.ModelCheckpoint(
         dirpath=os.path.join(save_path, 'ckpt'),
         save_last=True,
@@ -62,8 +65,8 @@ def main():
 
     trainer = pl.Trainer(
         gpus=n_gpus,
-        strategy=pl.plugins.DDPPlugin(find_unused_parameters=False),
-        callbacks=[checkpoint_callback],
+        callbacks=[base_logger, checkpoint_callback],
+        logger=False,
         **config['trainer_params']
         )
     

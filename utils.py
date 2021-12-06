@@ -94,8 +94,8 @@ def set_save_path(save_path, remove=True):
     # copy tree
     shutil.copytree(os.getcwd(), os.path.join(save_path, 'src'), ignore=shutil.ignore_patterns('__pycache__*', 'load*', 'save*', 'configs*'))
 
-    writer = SummaryWriter(os.path.join(save_path, 'tensorboard'))
-    return log, writer
+    # writer = SummaryWriter(os.path.join(save_path, 'tensorboard'))
+    return save_path
 
 
 def compute_num_params(model, text=False):

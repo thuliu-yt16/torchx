@@ -1,4 +1,4 @@
-from .models import register, make
+from .tools import register, make
 from . import base
 from . import resnet
 from . import liif
