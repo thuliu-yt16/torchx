@@ -1,4 +1,5 @@
 import os
+import yaml
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks.base import Callback
 from pytorch_lightning.utilities import rank_zero_only
@@ -19,12 +20,13 @@ class _logger:
 
 @callbacks.register('base-logger')
 class BaseLogger(Callback):
-    def __init__(self, save_path):
+    def __init__(self, save_path, config):
         super().__init__()
 
         self._timer = utils.Timer()
         self._start_epoch = None
         self.save_path = save_path
+        self.config = config
 
     @property
     def state_key(self) -> str:
@@ -33,6 +35,8 @@ class BaseLogger(Callback):
     @rank_zero_only
     def on_init_start(self, trainer):
         self._logger = _logger(utils.set_save_path(self.save_path))
+        with open(os.path.join(self.save_path, 'config.yaml'), 'w') as f:
+            yaml.dump(self.config, f, sort_keys=False)
     
     @rank_zero_only
     def on_train_epoch_start(self, trainer, pl_module):
@@ -49,4 +53,7 @@ class BaseLogger(Callback):
         t_epoch = utils.time_text(t - self._t_epoch_start)
         t_elapsed, t_all = utils.time_text(t), utils.time_text(t / prog)
 
-        self._logger.log(f'Epoch {trainer.current_epoch}/{trainer.max_epochs} {t_epoch} {t_elapsed}/{t_all}')
+        met = trainer.progress_bar_callback.get_metrics(trainer, pl_module)
+
+        metric_str = ','.join([f'{k}={v}'for k, v in met.items()])
+        self._logger.log(f'Epoch {trainer.current_epoch}/{trainer.max_epochs} {metric_str} {t_epoch} {t_elapsed}/{t_all}')

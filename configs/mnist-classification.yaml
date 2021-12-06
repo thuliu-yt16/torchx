@@ -23,6 +23,7 @@ train_wrapper:
 
 trainer_params:
   max_epochs: 100
+  strategy: ddp
 
 checkpoint:
   every_n_epochs: 1

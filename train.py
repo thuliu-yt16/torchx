@@ -12,7 +12,7 @@ import models
 import utils
 
 import pytorch_lightning as pl
-from callbacks import BaseLogger
+from callbacks import BaseLogger, GlobalProgressBar
 
 def main():
     parser = argparse.ArgumentParser()
@@ -44,8 +44,8 @@ def main():
     config['cmd_args'] = vars(args)
 
     # save config
-    with open(os.path.join(save_path, 'config.yaml'), 'w') as f:
-        yaml.dump(config, f, sort_keys=False)
+    # with open(os.path.join(save_path, 'config.yaml'), 'w') as f:
+    #     yaml.dump(config, f, sort_keys=False)
     
     pl.seed_everything(config['seed'])
     n_gpus = len(args.gpu.split(','))
@@ -54,7 +54,7 @@ def main():
     model = models.make(config['train_wrapper'])
     checkpoint_cfg = config.get('checkpoint', {})
 
-    base_logger = BaseLogger(save_path)
+    base_logger = BaseLogger(save_path, config)
 
     checkpoint_callback = pl.callbacks.ModelCheckpoint(
         dirpath=os.path.join(save_path, 'ckpt'),

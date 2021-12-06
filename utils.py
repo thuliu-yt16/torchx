@@ -92,7 +92,7 @@ def set_save_path(save_path, remove=True):
     set_log_path(save_path)
 
     # copy tree
-    shutil.copytree(os.getcwd(), os.path.join(save_path, 'src'), ignore=shutil.ignore_patterns('__pycache__*', 'load*', 'save*', 'configs*'))
+    shutil.copytree(os.getcwd(), os.path.join(save_path, 'src'), ignore=shutil.ignore_patterns('__pycache__*', 'load*', 'save*', 'configs*', '.git*'))
 
     return save_path
 
