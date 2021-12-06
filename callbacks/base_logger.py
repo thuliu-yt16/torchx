@@ -1,5 +1,4 @@
 import os
-
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks.base import Callback
 from pytorch_lightning.utilities import rank_zero_only
@@ -23,6 +22,7 @@ class BaseLogger(Callback):
     def __init__(self, save_path):
         super().__init__()
 
+        self._timer = utils.Timer()
         self._start_epoch = None
         self.save_path = save_path
 
@@ -33,7 +33,6 @@ class BaseLogger(Callback):
     @rank_zero_only
     def on_init_start(self, trainer):
         self._logger = _logger(utils.set_save_path(self.save_path))
-        self._timer = utils.Timer()
     
     @rank_zero_only
     def on_train_epoch_start(self, trainer, pl_module):
