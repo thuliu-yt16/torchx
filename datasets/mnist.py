@@ -11,7 +11,7 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, random_split
 
 import pytorch_lightning as pl
-from datasets import register
+import datasets
 
 class mnist_wrapper(Dataset):
     def __init__(self, mnist):
@@ -28,7 +28,7 @@ class mnist_wrapper(Dataset):
         }
 
 
-@register('mnist')
+@datasets.register('mnist')
 class MNISTDataModule(pl.LightningDataModule):
     def __init__(self, root_dir, batch_size):
         super().__init__()

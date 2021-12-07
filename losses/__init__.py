@@ -1,1 +1,2 @@
-from .losses import register, make
+from .tools import register, make
+from . import myloss

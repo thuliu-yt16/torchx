@@ -1,9 +1,9 @@
 import torch.nn as nn
+import models
 
-from models import register
 
 
-@register('mlp')
+@models.register('mlp')
 class MLP(nn.Module):
 
     def __init__(self, in_dim, out_dim, hidden_list):

@@ -4,12 +4,10 @@ import torch.nn.functional as F
 import math
 
 import models
-import losses
-from models import register
 
 from torchvision.models import resnet18
 
-@register('resnet18')
+@models.register('resnet18')
 class resnet(nn.Module):
     def __init__(self, num_classes):
         super().__init__()

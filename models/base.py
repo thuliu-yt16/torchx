@@ -10,7 +10,7 @@ from models import register
 import pytorch_lightning as pl
 
 
-@register('base')
+@models.register('base')
 class BaseWrapper(pl.LightningModule):
     def __init__(self, model_spec, loss_spec, optim_spec, scheduler_spec=None):
         super().__init__()
