@@ -27,48 +27,48 @@ This project has taken inspiration from [LIIF](https://github.com/yinboc/liif).
 ```sh
 torchx
 ├── callbacks 
-│   ├── base_logger.py				# ETA for training, the experiment directory creator
-│   ├── __init__.py											
+│   ├── base_logger.py              # ETA for training, the experiment directory creator
+│   ├── __init__.py                                            
 │   ├── progressbar.py
 │   ├── ...
-│   └── tools.py			        # callback register
-├── configs															
-│   ├── ...							# your experiment configurations
-│   └── mnist-classification.yaml				
-├── datasets														
+│   └── tools.py                    # callback register
+├── configs                                                            
+│   ├── ...                         # your experiment configurations
+│   └── mnist-classification.yaml                
+├── datasets                                                        
 │   ├── div2k.py
 │   ├── __init__.py
 │   ├── mnist.py
 │   ├── ...
-│   └── tools.py					# dataset register
-├── load							# datasets
+│   └── tools.py                    # dataset register
+├── load                            # datasets
 │   ├── div2k 
 │   ├── ...
 │   └── mnist
 ├── losses
 │   ├── __init__.py
-│   ├── tools.py					# loss register
+│   ├── tools.py                    # loss register
 │   ├── ...
 │   └── myloss.py
 ├── models
-│   ├── base.py						# definition of base training wrapper
+│   ├── base.py                     # definition of base training wrapper
 │   ├── __init__.py
 │   ├── mlp.py
 │   ├── resnet.py
 │   ├── ...
-│   └── tools.py					# model/training wrapper register
-├── save																
+│   └── tools.py                    # model/training wrapper register
+├── save                                                                
 │   ├── ...
-│   └── test						# experiment directory
-│       ├── ckpt					# all the checkpoints
-│       ├── config.yaml				# configuration of the experiment
-│       ├── default					# some other files
+│   └── test                        # experiment directory
+│       ├── ckpt                    # all the checkpoints
+│       ├── config.yaml             # configuration of the experiment
+│       ├── default                 # some other files
 │       │   └── version_0
-│       │       ├── events...		# tensorboard logger
-│       │       └── hparams.yaml	# hyperparameter of training wrapper
-│       └── src						# code at the beginning of the experiment
-├── train.py						# experiment entrance
-└── utils.py						# utility functions
+│       │       ├── events...       # tensorboard logger
+│       │       └── hparams.yaml    # hyperparameter of training wrapper
+│       └── src                     # code at the beginning of the experiment
+├── train.py                        # experiment entrance
+└── utils.py                        # utility functions
 ```
 
 ### Make a custom model
@@ -145,37 +145,37 @@ Hooks: https://pytorch-lightning.readthedocs.io/en/stable/common/lightning_modul
 Take `configs/mnist-classification.yaml` as an example:
 
 ```yaml
-data_module:						# define datasets (required)
-  name: mnist						# specify the dataset name 
+data_module:                        # define datasets (required)
+  name: mnist                       # specify the dataset name 
   args:
     root_dir: ./load/mnist
     batch_size: 32
   
-train_wrapper:						# define training wrapper (required)
-  name: base						# specify the training wrapper name 
-  args:								# arguments in BaseWrapper.__init__()
-    model_spec:						# define model
+train_wrapper:                      # define training wrapper (required)
+  name: base                        # specify the training wrapper name 
+  args:                             # arguments in BaseWrapper.__init__()
+    model_spec:                     # define model
       name: resnet18
       args:
         num_classes: 10
     
-    loss_spec:						# define loss
-      name: mnist_ce				
+    loss_spec:                      # define loss
+      name: mnist_ce                
     
-    optim_spec:						# define optimizer
+    optim_spec:                     # define optimizer
       name: Adam
       args:
         lr: 1.e-4
         betas: [0.9, 0.999]
 
-trainer_params:						# arguments for pl.Trainer
+trainer_params:                     # arguments for pl.Trainer
   max_epochs: 100
-  strategy: ddp						# training strategy (dp, ddp)
+  strategy: ddp                     # training strategy (dp, ddp)
 
-checkpoint:							# arguments for pl.callbacks.ModelCheckpoint
-  every_n_epochs: 1 								
+checkpoint:                         # arguments for pl.callbacks.ModelCheckpoint
+  every_n_epochs: 1                                 
 
-seed: 42							# fix seeds
+seed: 42                            # fix seeds
 ```
 
 ### Logging
@@ -202,6 +202,3 @@ python train.py --config configs/mnist-classification.yaml --gpu 1,2 --name test
 ```
 
 Do not set `CUDA_VISIBLE_DEVICES` before the command. `--gpu` will set the environment automatically. 
-
-
-
