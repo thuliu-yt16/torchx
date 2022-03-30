@@ -1,5 +1,5 @@
 data_module:
-  name: mnist
+  name: mnist-dm
   args:
     root_dir: ./load/mnist
     batch_size: 32

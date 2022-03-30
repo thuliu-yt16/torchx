@@ -13,9 +13,15 @@ from torch.utils.data import DataLoader, random_split
 import pytorch_lightning as pl
 import datasets
 
+@datasets.register('mnist-ds')
 class mnist_wrapper(Dataset):
-    def __init__(self, mnist):
-        self._dataset = mnist
+    def __init__(self, mnist=None, train=True):
+        if mnist is not None:
+            self._dataset = mnist
+        else:
+            self.transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
+            self._dataset = torchvision.datasets.MNIST(self.root_dir, train=train, download=True, transform=self.transform)
+
     
     def __len__(self):
         return len(self._dataset)
@@ -28,7 +34,7 @@ class mnist_wrapper(Dataset):
         }
 
 
-@datasets.register('mnist')
+@datasets.register('mnist-dm')
 class MNISTDataModule(pl.LightningDataModule):
     def __init__(self, root_dir, batch_size):
         super().__init__()

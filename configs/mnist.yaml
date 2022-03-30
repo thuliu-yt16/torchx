@@ -1,0 +1,48 @@
+train_dataset:
+  dataset:
+    name: mnist-ds
+    args:
+      root_dir: ./load/mnist
+      train: true
+  batch_size: 8
+  shuffle: true
+
+val_dataset:
+  dataset:
+    name: mnist-ds
+    args:
+      root_dir: ./load/mnist
+      train: false
+  batch_size: 8
+  shuffle: true
+
+model:
+  name: resnet18
+  args:
+    num_classes: 10
+
+optimizer:
+  name: Adam
+  args:
+    lr: 1.e-4
+    betas: [0.9, 0.999]
+
+scheduler:
+  name: LambdaLR
+  args:
+    lr_lambda: 
+      name: warmup_lr
+      args: 
+        start: 1
+        total_iters: 5
+        exp_gamma: 1 
+    verbose: True
+
+loss:
+  name: mnist_ce
+
+epoch_max: 100
+epoch_val: 1
+epoch_save: 20
+run_step: true
+load_optimizer: true

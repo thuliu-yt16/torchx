@@ -36,7 +36,6 @@ torchx
 │   ├── ...                         # your experiment configurations
 │   └── mnist-classification.yaml                
 ├── datasets                                                        
-│   ├── div2k.py
 │   ├── __init__.py
 │   ├── mnist.py
 │   ├── ...
@@ -67,6 +66,7 @@ torchx
 │       │       ├── events...       # tensorboard logger
 │       │       └── hparams.yaml    # hyperparameter of training wrapper
 │       └── src                     # code at the beginning of the experiment
+├── train_pl.py                     # experiment entrance with pytorch lightning
 ├── train.py                        # experiment entrance
 └── utils.py                        # utility functions
 ```
@@ -198,7 +198,12 @@ Logging in torchx is divided into three main parts:
 ### Run a simple experiment
 
 ```bash
-python train.py --config configs/mnist-classification.yaml --gpu 1,2 --name test
+python train_pl.py --config configs/mnist-pl.yaml --gpu 1,2 --name test
 ```
 
-Do not set `CUDA_VISIBLE_DEVICES` before the command. `--gpu` will set the environment automatically. 
+Or you could train without pytorch_lightning and ddp using 
+
+```bash
+python train.py --config configs/mnist.yaml --gpu 1 --name test
+```
+
