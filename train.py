@@ -138,7 +138,6 @@ def main(config_, save_path):
     train_loader, val_loader = make_data_loaders()
 
     model, optimizer, epoch_start, lr_scheduler, loss_fn = prepare_training()
-    model.load_dr()
 
     n_gpus = len(os.environ['CUDA_VISIBLE_DEVICES'].split(','))
     if n_gpus > 1:

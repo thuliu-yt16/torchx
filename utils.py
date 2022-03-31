@@ -93,11 +93,12 @@ def set_save_path(save_path, remove=True):
     ensure_path(save_path, remove=remove)
     set_log_path(save_path)
 
-    # copy tree
-    shutil.copytree(os.getcwd(), os.path.join(save_path, 'src'), ignore=shutil.ignore_patterns('__pycache__*', 'load*', 'save*', 'configs*', '.git*'))
+    if os.path.exists(os.path.join(save_path, 'src')):
+        shutil.rmtree(os.path.join(save_path, 'src'))
+    shutil.copytree(os.getcwd(), os.path.join(save_path, 'src'), ignore=shutil.ignore_patterns('__pycache__*', 'load*', 'save*', '.git*'))
 
-    return save_path
-
+    writer = SummaryWriter(os.path.join(save_path, 'tensorboard'))
+    return log, writer
 
 def compute_num_params(model, text=False):
     tot = int(sum([np.prod(p.shape) for p in model.parameters()]))
@@ -112,8 +113,8 @@ def compute_num_params(model, text=False):
 
 def make_optimizer(param_list, optimizer_spec, load_sd=False):
     Optimizer = {
-        'sgd': SGD,
-        'adam': Adam
+        'SGD': SGD,
+        'Adam': Adam
     }[optimizer_spec['name']]
     optimizer = Optimizer(param_list, **optimizer_spec['args'])
     if load_sd:

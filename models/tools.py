@@ -1,3 +1,4 @@
+import torch
 import copy
 
 
@@ -25,6 +26,7 @@ def make(model_spec, args=None, load_sd=False):
 def freeze(model):
     for param in model.parameters():
         param.requires_grad = False
+    
 
 
 def make_lr_scheduler(optim, scheduler_spec):

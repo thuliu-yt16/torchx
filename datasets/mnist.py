@@ -15,10 +15,11 @@ import datasets
 
 @datasets.register('mnist-ds')
 class mnist_wrapper(Dataset):
-    def __init__(self, mnist=None, train=True):
+    def __init__(self, mnist=None, train=True, root_dir=None):
         if mnist is not None:
             self._dataset = mnist
         else:
+            self.root_dir = root_dir
             self.transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
             self._dataset = torchvision.datasets.MNIST(self.root_dir, train=train, download=True, transform=self.transform)
 
